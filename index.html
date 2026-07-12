@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>明白纸 — 给家人留一张明白纸</title>
+<meta name="description" content="把散落在微信、支付宝、游戏、云相册里的数字家当，整理成一份家人看得懂、找得到的清单。不存密码、不碰资金、不是遗嘱。">
+<style>
+:root{
+  --bg:#faf6ef;
+  --surface:#ffffff;
+  --ink:#17211e;
+  --muted:#5c6662;
+  --deep:#0e3b33;
+  --cream:#f6efdf;
+  --teal:#1e6f63;
+  --teal-dark:#174f47;
+  --teal-tint:#e2efec;
+  --amber:#b95d1d;
+  --amber-tint:#f7e9d8;
+  --alert:#c2331f;
+  --alert-tint:#fbe9e4;
+  --line:#e8e1d3;
+  --shadow:0 2px 14px rgba(23,33,30,.07);
+  --r-card:20px;
+  --r-pill:999px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{font-size:19px;}
+body{
+  font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.6;
+  min-height:100vh;
+}
+.wrap{max-width:560px;margin:0 auto;padding:0 20px 60px;}
+
+/* ---------- 顶栏 ---------- */
+header.top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 0 6px;
+}
+.brand{display:flex;align-items:center;gap:8px;cursor:pointer;background:none;border:none;font-family:inherit;}
+.brand svg{width:26px;height:26px;}
+.brand b{font-size:.95rem;letter-spacing:.06em;color:var(--deep);}
+
+/* ---------- 视图 ---------- */
+section.view{display:none;}
+section.view.on{display:block;animation:rise .3s ease;}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+h1.display{
+  font-size:1.85rem;font-weight:800;line-height:1.3;letter-spacing:.01em;
+  margin:14px 0 10px;
+}
+.lede{color:var(--muted);font-size:.95rem;margin-bottom:20px;}
+.kicker{
+  font-size:.78rem;font-weight:700;letter-spacing:.14em;color:var(--teal);
+  text-transform:uppercase;margin-top:18px;margin-bottom:8px;
+}
+
+/* ---------- 首页英雄块 ---------- */
+.hero{
+  background:var(--deep);color:var(--cream);border-radius:24px;
+  padding:28px 24px;margin-top:10px;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"纸";position:absolute;right:-14px;bottom:-38px;
+  font-size:9rem;font-weight:800;color:rgba(246,239,223,.06);line-height:1;
+  pointer-events:none;
+}
+.hero h1{font-size:1.7rem;font-weight:800;line-height:1.45;}
+.hero h1 em{font-style:normal;color:#7fd1c0;}
+.hero p{margin-top:10px;font-size:.88rem;color:rgba(246,239,223,.75);}
+
+/* ---------- 导航卡 ---------- */
+.nav-cards{display:flex;flex-direction:column;gap:14px;margin-top:18px;}
+.ncard{
+  display:flex;align-items:center;gap:16px;text-align:left;width:100%;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);
+  padding:20px;cursor:pointer;font-family:inherit;color:var(--ink);
+  box-shadow:var(--shadow);min-height:96px;
+}
+.ncard:active{transform:scale(.985);}
+.ncard .ic{
+  flex:0 0 52px;height:52px;border-radius:16px;display:flex;
+  align-items:center;justify-content:center;
+}
+.ncard .ic svg{width:26px;height:26px;}
+.ncard.teal .ic{background:var(--teal-tint);}
+.ncard.plain .ic{background:var(--cream);}
+.ncard h2{font-size:1.08rem;font-weight:700;line-height:1.35;}
+.ncard p{font-size:.85rem;color:var(--muted);margin-top:3px;line-height:1.5;}
+.ncard .done{
+  display:inline-block;font-size:.75rem;color:var(--teal);font-weight:700;
+  background:var(--teal-tint);border-radius:var(--r-pill);padding:2px 10px;margin-top:6px;
+}
+
+/* ---------- 按钮体系 ---------- */
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;min-height:60px;border:none;border-radius:var(--r-pill);
+  font-size:1.02rem;font-weight:700;font-family:inherit;cursor:pointer;
+  padding:16px 20px;margin-bottom:12px;text-align:center;
+  color:#fff;background:var(--teal);text-decoration:none;
+}
+.btn:active{background:var(--teal-dark);}
+.btn.soft{background:var(--teal-tint);color:var(--teal-dark);}
+.btn.soft:active{background:#d3e6e1;}
+.btn.ghost{background:transparent;color:var(--muted);font-weight:500;min-height:50px;}
+
+/* ---------- 卡片 ---------- */
+.card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r-card);padding:20px;margin-bottom:14px;
+  box-shadow:var(--shadow);
+}
+.card.sand{background:var(--cream);border-color:transparent;box-shadow:none;}
+.card h3{font-size:1.02rem;font-weight:700;margin-bottom:6px;}
+.card p{font-size:.92rem;}
+.card .small{font-size:.8rem;color:var(--muted);}
+
+ul.rules{list-style:none;}
+ul.rules li{
+  padding:10px 0 10px 30px;position:relative;font-size:.92rem;line-height:1.55;
+  border-bottom:1px dashed var(--line);
+}
+ul.rules li:last-child{border-bottom:none;}
+ul.rules li::before{
+  content:"";position:absolute;left:4px;top:19px;width:9px;height:9px;
+  border-radius:50%;background:var(--teal);
+}
+ul.rules li b{font-weight:700;}
+
+footer.foot{margin-top:30px;text-align:center;}
+footer.foot p{font-size:.78rem;color:var(--muted);margin-bottom:4px;}
+
+/* ---------- 表单控件 ---------- */
+label.fld{display:block;font-size:.85rem;color:var(--muted);margin-bottom:8px;font-weight:600;}
+input[type=text],select,textarea{
+  width:100%;min-height:56px;font-size:.98rem;font-family:inherit;
+  border:1.5px solid var(--line);border-radius:16px;padding:13px 16px;
+  background:var(--surface);margin-bottom:6px;color:var(--ink);
+}
+textarea{min-height:88px;resize:vertical;line-height:1.5;}
+select{appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="%235c6662" stroke-width="2"/></svg>');background-repeat:no-repeat;background-position:right 14px center;background-size:18px;}
+input[type=text]:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-tint);}
+p.warn{font-size:.78rem;color:var(--amber);margin:0 0 14px;font-weight:600;line-height:1.5;}
+
+/* ---------- 快捷选择 chips ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 16px;}
+.chip{
+  border:1.5px solid var(--line);background:var(--surface);border-radius:999px;
+  padding:9px 18px;font-size:.88rem;font-family:inherit;cursor:pointer;
+  color:var(--ink);min-height:42px;
+}
+.chip.active{background:var(--teal);border-color:var(--teal);color:#fff;}
+
+/* ---------- 概览统计 ---------- */
+.stats{display:flex;gap:14px;margin:14px 0 18px;}
+.stat{flex:1;background:var(--teal-tint);border-radius:16px;padding:16px;text-align:center;}
+.stat b{font-size:1.6rem;color:var(--teal-dark);display:block;line-height:1.2;}
+.stat span{font-size:.76rem;color:var(--muted);}
+
+/* ---------- 资产条目卡 ---------- */
+.item-row{
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  padding:16px;margin-bottom:12px;box-shadow:var(--shadow);
+}
+.item-row h4{font-size:1rem;font-weight:700;}
+.item-row .meta{font-size:.82rem;color:var(--muted);margin-top:5px;}
+.item-row .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.item-row .tag{font-size:.76rem;background:var(--teal-tint);color:var(--teal-dark);border-radius:999px;padding:3px 11px;font-weight:600;}
+.item-row .msg{font-size:.85rem;margin-top:8px;color:var(--ink);background:var(--cream);border-radius:12px;padding:10px 12px;}
+.row-actions{display:flex;gap:10px;margin-top:12px;}
+.row-actions button{
+  flex:1;min-height:42px;border-radius:999px;border:1.5px solid var(--line);
+  background:var(--surface);font-family:inherit;font-size:.85rem;cursor:pointer;color:var(--ink);
+}
+.row-actions .danger{color:var(--alert);border-color:var(--alert-tint);}
+
+/* ---------- 可信度徽标 ---------- */
+.badge-conf{display:inline-block;font-size:.74rem;font-weight:700;padding:3px 11px;border-radius:999px;}
+.badge-conf.verified{background:var(--teal-tint);color:var(--teal-dark);}
+.badge-conf.reported{background:var(--amber-tint);color:#8a4515;}
+.badge-conf.unverified{background:var(--amber);color:#fff;font-weight:800;}
+
+/* ---------- 打印区域：屏幕上永远隐藏 ---------- */
+#printArea{display:none;}
+
+@media print{
+  body *{visibility:hidden;}
+  #printArea,#printArea *{visibility:visible;}
+  #printArea{display:block;position:absolute;left:0;top:0;width:100%;padding:0;margin:0;color:#000;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;}
+  @page{margin:18mm 16mm;}
+  .p-cover{text-align:center;padding-bottom:20px;border-bottom:2px solid #000;margin-bottom:22px;}
+  .p-cover h1{font-size:24pt;font-weight:800;letter-spacing:.04em;}
+  .p-cover .p-date{font-size:11pt;color:#333;margin-top:8px;}
+  .p-cat{margin-top:20px;page-break-inside:avoid;}
+  .p-cat h2{font-size:14pt;font-weight:800;border-bottom:1px solid #999;padding-bottom:4px;margin-bottom:10px;}
+  .p-item{margin-bottom:14px;padding-bottom:10px;border-bottom:1px dashed #ccc;font-size:11pt;}
+  .p-item .p-plat{font-weight:700;font-size:12.5pt;margin-bottom:3px;}
+  .p-item .p-field{margin-top:3px;}
+  .p-item .p-field b{font-weight:700;}
+  .p-foot{margin-top:32px;padding-top:14px;border-top:2px solid #000;font-size:10pt;color:#222;}
+  .p-sign{display:flex;justify-content:space-between;margin-top:36px;}
+  .p-sign div{width:45%;border-top:1px solid #000;padding-top:6px;font-size:10pt;text-align:center;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <button class="brand" onclick="go('home')">
+    <svg viewBox="0 0 32 32" fill="none"><rect x="3" y="3" width="26" height="26" rx="8" fill="#0e3b33"/><path d="M10 11h12M10 16h12M10 21h7" stroke="#7fd1c0" stroke-width="2.4" stroke-linecap="round"/></svg>
+    <b>明白纸</b>
+  </button>
+</header>
+
+<!-- ========== 首页 ========== -->
+<section class="view" id="view-home">
+  <div class="hero">
+    <h1>给家人留一张<br><em>明白纸</em>。</h1>
+    <p>把散落在微信、支付宝、游戏、云相册里的数字家当，整理成一份家人看得懂、找得到的清单。</p>
+  </div>
+
+  <div class="nav-cards">
+    <button class="ncard teal" onclick="go('inventory')">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5A2.5 2.5 0 016.5 3H20v15.5H6.5A2.5 2.5 0 004 21V5.5z" stroke="#1e6f63" stroke-width="2" stroke-linejoin="round"/><path d="M4 18.5A2.5 2.5 0 016.5 16H20" stroke="#1e6f63" stroke-width="2"/></svg></div>
+      <div><h2>开始盘点</h2><p>按类别登记数字资产，随时可以回来继续</p></div>
+    </button>
+    <button class="ncard plain" onclick="go('guides')">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l8 8-9 9-8-8V4h8z" stroke="#5c6662" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.4" fill="#5c6662"/></svg></div>
+      <div><h2>查看家属指南</h2><p>每个平台该怎么办：材料、入口、电话、依据</p></div>
+    </button>
+  </div>
+
+  <div class="card sand">
+    <p style="font-weight:700;margin-bottom:6px">三件事，明白纸不做</p>
+    <ul class="rules">
+      <li><b>不存密码</b>——任何输入框都不要填密码，工具也不会问你要</li>
+      <li><b>不碰资金</b>——提现、转移只指路，不代办任何资金操作</li>
+      <li><b>不是遗嘱</b>——产权分配请走公证处或遗嘱库，这份清单只帮家人少走弯路</li>
+    </ul>
+  </div>
+
+  <footer class="foot">
+    <p>不联网 · 不上传 · 所有记录只存在这台设备的浏览器里</p>
+  </footer>
+</section>
+
+<!-- ========== 盘点：分类总览 ========== -->
+<section class="view" id="view-inventory">
+  <div class="kicker">资产盘点</div>
+  <h1 class="display">按类别登记，<br>不用一次填完</h1>
+  <p class="lede">选一类开始，随时可以回来继续。只记「有什么、在哪个平台、大概怎么处理」，不记密码。</p>
+  <div class="nav-cards" id="invCards"></div>
+  <button class="btn soft" onclick="go('checklist')">查看已登记清单</button>
+  <button class="btn ghost" onclick="go('home')">回首页</button>
+</section>
+
+<!-- ========== 盘点：单类别详情 ========== -->
+<section class="view" id="view-category">
+  <div class="kicker" id="catKicker">分类</div>
+  <h1 class="display" id="catTitle">登记资产</h1>
+  <p class="lede" id="catHint"></p>
+
+  <div class="chips" id="catQuick"></div>
+
+  <div class="card sand">
+    <label class="fld">不在上面？自己填平台名称</label>
+    <input type="text" id="customPlatform" placeholder="例如：知乎会员">
+    <button class="btn soft" onclick="openFormCustom()" style="margin-top:6px">添加这个平台</button>
+  </div>
+
+  <div id="assetForm" style="display:none">
+    <label class="fld">平台名称</label>
+    <input type="text" id="fPlatform" placeholder="例如：微信">
+
+    <label class="fld">账号备注（帮家人认出是哪个账号）</label>
+    <input type="text" id="fNote" placeholder="例如：尾号1234的手机号注册">
+    <p class="warn">提示：只写能帮家人认出账号的信息，不要写密码。</p>
+
+    <label class="fld">预估价值</label>
+    <select id="fValue">
+      <option>无</option><option>几十元</option><option>几百元</option><option>几千元</option><option>过万</option><option selected>不确定</option>
+    </select>
+
+    <label class="fld">处理意愿</label>
+    <select id="fIntent">
+      <option>留念</option><option>注销</option><option>转移给家人</option><option>提现</option><option selected>由家人决定</option>
+    </select>
+
+    <label class="fld">凭证存放线索（选填）</label>
+    <input type="text" id="fClue" placeholder="例如：家里保险柜的蓝色笔记本">
+    <p class="warn">只写在哪儿能找到，不要写密码本身。</p>
+
+    <label class="fld">想对家人说的话（选填）</label>
+    <textarea id="fMessage" placeholder="想留给家人的一句话……"></textarea>
+
+    <button class="btn" onclick="saveAsset()">保存</button>
+    <button class="btn ghost" onclick="cancelForm()">取消</button>
+  </div>
+
+  <div class="kicker">已登记（<span id="catCount">0</span>）</div>
+  <div id="catItemList"></div>
+
+  <button class="btn ghost" onclick="go('inventory')">返回全部分类</button>
+</section>
+
+<!-- ========== 清单视图 ========== -->
+<section class="view" id="view-checklist">
+  <div class="kicker">清单总览</div>
+  <h1 class="display">家庭数字资产清单</h1>
+  <p class="lede">只存在这台设备的浏览器里；导出成文件、或打印成纸，才是真正交到家人手上的那一份。</p>
+
+  <div class="stats">
+    <div class="stat"><b id="statCount">0</b><span>已登记项</span></div>
+    <div class="stat"><b id="statCat">0</b><span>覆盖类别（共 8）</span></div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <button class="btn soft" style="flex:1;min-width:130px" onclick="exportData()">导出 JSON</button>
+    <button class="btn soft" style="flex:1;min-width:130px" onclick="document.getElementById('importFile').click()">导入 JSON</button>
+  </div>
+  <button class="btn soft" onclick="printAssets()">打印这份清单</button>
+  <input type="file" id="importFile" accept="application/json" style="display:none" onchange="importData(this.files[0])">
+
+  <div id="checklistBody"></div>
+
+  <button class="btn ghost" onclick="go('inventory')">继续登记</button>
+  <button class="btn ghost" onclick="go('home')">回首页</button>
+</section>
+
+<!-- ========== 指南：分类筛选与列表 ========== -->
+<section class="view" id="view-guides">
+  <div class="kicker">家属操作指南</div>
+  <h1 class="display">这个平台，<br>该怎么办</h1>
+  <p class="lede">按平台查材料、流程、入口和电话。标注「未经官方核实」的内容，请自行与平台客服确认。</p>
+
+  <div class="card sand">
+    <p style="font-weight:700;margin-bottom:6px">先看这里</p>
+    <ul class="rules">
+      <li>先别急着注销手机号——手机号是几乎所有账号的验证锚点，销号约 90 天后会被二次放号，建议先办完微信、支付宝等资金类账户的继承提取，再考虑手机号的过户或注销。</li>
+      <li><b>《个人信息保护法》第49条</b>：近亲属可凭死亡证明与亲属关系证明，对逝者个人信息行使查阅、复制、更正、删除等权利——平台没有专门通道时，这条是通用的法律抓手。</li>
+    </ul>
+  </div>
+
+  <div class="chips" id="guideFilter"></div>
+  <div id="guideList"></div>
+  <button class="btn ghost" onclick="go('home')">回首页</button>
+</section>
+
+<!-- ========== 指南：操作卡详情 ========== -->
+<section class="view" id="view-guideDetail">
+  <div class="kicker" id="gdKicker">分类</div>
+  <h1 class="display" id="gdTitle">操作卡</h1>
+  <div id="gdBody"></div>
+  <button class="btn soft" id="gdPrintBtn">打印这张操作卡</button>
+  <button class="btn ghost" onclick="go('guides')">返回指南列表</button>
+</section>
+
+</div>
+
+<div id="printArea"></div>
+
+<script>
+/* ================= 存储 ================= */
+var KEY='mingbai.v1';
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+function save(d){try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function pad(n){return n<10?'0'+n:''+n;}
+
+/* ================= 分类与快捷平台 ================= */
+var CATS=[
+ {id:'social',label:'社交',hint:'微信、QQ、微博等社交与通讯账号',quick:['微信','QQ','微博','抖音']},
+ {id:'pay',label:'支付',hint:'零钱、银行卡、信用卡等支付渠道',quick:['微信零钱','支付宝','银行卡','信用卡']},
+ {id:'invest',label:'理财',hint:'基金、证券、保险等理财账户',quick:['余额宝','基金账户','证券账户','保险保单']},
+ {id:'game',label:'游戏',hint:'游戏账号与虚拟资产',quick:['Steam','手游账号','主机账号(PSN/Xbox)','游戏点卡/装备']},
+ {id:'cloud',label:'云存储',hint:'网盘与云相册',quick:['iCloud','百度网盘','微云','Google Drive']},
+ {id:'sub',label:'订阅',hint:'各类自动续费的会员服务',quick:['视频会员','音乐会员','云盘会员','其他自动续费']},
+ {id:'domain',label:'域名及网站',hint:'域名、个人网站、服务器',quick:['域名注册','个人网站/博客','云服务器','企业邮箱']},
+ {id:'media',label:'自媒体账号',hint:'公众号、短视频、图文账号',quick:['微信公众号','抖音/快手','小红书','B站/视频号']}
+];
+var ICON_TAG='<svg viewBox="0 0 24 24" fill="none"><path d="M12 3l8 8-9 9-8-8V4h8z" stroke="#1e6f63" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.4" fill="#1e6f63"/></svg>';
+var ICON_BOOK='<svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5A2.5 2.5 0 016.5 3H20v15.5H6.5A2.5 2.5 0 004 21V5.5z" stroke="#5c6662" stroke-width="2" stroke-linejoin="round"/><path d="M4 18.5A2.5 2.5 0 016.5 16H20" stroke="#5c6662" stroke-width="2"/></svg>';
+
+/* ================= 视图切换 ================= */
+var currentCat=null;
+function go(id){
+  var vs=document.querySelectorAll('section.view');
+  for(var i=0;i<vs.length;i++)vs[i].classList.remove('on');
+  var el=document.getElementById('view-'+id);
+  if(el)el.classList.add('on');
+  window.scrollTo(0,0);
+  if(id==='inventory')renderInventory();
+  if(id==='checklist')renderChecklist();
+  if(id==='guides')renderGuideView();
+}
+
+/* ================= 盘点：分类总览 ================= */
+function renderInventory(){
+  var d=load();var assets=d.assets||[];
+  var h='';
+  CATS.forEach(function(c){
+    var n=assets.filter(function(a){return a.cat===c.id}).length;
+    h+='<button class="ncard teal" onclick="go(\'category\');renderCategory(\''+c.id+'\')">'+
+       '<div class="ic">'+ICON_TAG+'</div>'+
+       '<div><h2>'+c.label+'</h2><p>'+c.hint+'</p>'+(n?'<span class="done">已登记 '+n+' 项</span>':'')+'</div>'+
+       '</button>';
+  });
+  document.getElementById('invCards').innerHTML=h;
+}
+
+/* ================= 盘点：单类别详情 ================= */
+var editingId=null;
+function renderCategory(catId){
+  currentCat=catId;
+  var c=CATS.filter(function(x){return x.id===catId})[0];
+  if(!c)return;
+  document.getElementById('catKicker').textContent=c.label;
+  document.getElementById('catTitle').textContent='登记「'+c.label+'」类资产';
+  document.getElementById('catHint').textContent=c.hint+'。选一个常见平台，或自己填写。';
+  document.getElementById('catQuick').innerHTML=c.quick.map(function(p){
+    return '<button class="chip" onclick="openFormQuick(\''+p.replace(/'/g,"\\'")+'\')">'+p+'</button>';
+  }).join('');
+  cancelForm();
+  refreshCategoryList();
+}
+function refreshCategoryList(){
+  var d=load();var items=(d.assets||[]).filter(function(x){return x.cat===currentCat;});
+  document.getElementById('catCount').textContent=items.length;
+  document.getElementById('catItemList').innerHTML=items.length?items.map(renderItemRow).join(''):'<p class="lede">这一类还没有登记，选个平台开始吧。</p>';
+}
+function renderItemRow(a){
+  return '<div class="item-row">'+
+    '<h4>'+esc(a.platform)+'</h4>'+
+    '<div class="meta">'+(a.note?esc(a.note):'未填写账号备注')+'</div>'+
+    '<div class="tags"><span class="tag">'+esc(a.value||'不确定')+'</span><span class="tag">'+esc(a.intent||'由家人决定')+'</span></div>'+
+    (a.clue?'<div class="meta">凭证线索：'+esc(a.clue)+'</div>':'')+
+    (a.message?'<div class="msg">'+esc(a.message)+'</div>':'')+
+    '<div class="row-actions"><button onclick="editAsset(\''+a.id+'\')">编辑</button><button class="danger" onclick="deleteAsset(\''+a.id+'\')">删除</button></div>'+
+    '</div>';
+}
+
+/* ---------- 表单 ---------- */
+function resetForm(){
+  document.getElementById('fPlatform').value='';
+  document.getElementById('fNote').value='';
+  document.getElementById('fValue').value='不确定';
+  document.getElementById('fIntent').value='由家人决定';
+  document.getElementById('fClue').value='';
+  document.getElementById('fMessage').value='';
+}
+function showForm(){
+  document.getElementById('assetForm').style.display='block';
+  document.getElementById('assetForm').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function cancelForm(){
+  document.getElementById('assetForm').style.display='none';
+  editingId=null;
+  resetForm();
+}
+function openFormQuick(name){
+  editingId=null;resetForm();
+  document.getElementById('fPlatform').value=name;
+  showForm();
+}
+function openFormCustom(){
+  var v=document.getElementById('customPlatform').value.trim();
+  if(!v){alert('请先填写平台名称');return;}
+  editingId=null;resetForm();
+  document.getElementById('fPlatform').value=v;
+  document.getElementById('customPlatform').value='';
+  showForm();
+}
+function saveAsset(){
+  var platform=document.getElementById('fPlatform').value.trim();
+  if(!platform){alert('请填写平台名称');return;}
+  var d=load();d.assets=d.assets||[];
+  var a={
+    id:editingId||('a'+Date.now()+Math.floor(Math.random()*1000)),
+    cat:currentCat,
+    platform:platform,
+    note:document.getElementById('fNote').value.trim(),
+    value:document.getElementById('fValue').value,
+    intent:document.getElementById('fIntent').value,
+    clue:document.getElementById('fClue').value.trim(),
+    message:document.getElementById('fMessage').value.trim(),
+    ts:Date.now()
+  };
+  if(editingId){
+    var idx=-1;
+    for(var i=0;i<d.assets.length;i++){if(d.assets[i].id===editingId){idx=i;break;}}
+    if(idx>=0)d.assets[idx]=a;else d.assets.push(a);
+  }else{
+    d.assets.push(a);
+  }
+  save(d);
+  cancelForm();
+  refreshCategoryList();
+}
+function editAsset(id){
+  var d=load();var list=d.assets||[];
+  var a=null;
+  for(var i=0;i<list.length;i++){if(list[i].id===id){a=list[i];break;}}
+  if(!a)return;
+  if(a.cat!==currentCat||!document.getElementById('view-category').classList.contains('on')){
+    go('category');renderCategory(a.cat);
+  }
+  editingId=id;
+  document.getElementById('fPlatform').value=a.platform;
+  document.getElementById('fNote').value=a.note||'';
+  document.getElementById('fValue').value=a.value||'不确定';
+  document.getElementById('fIntent').value=a.intent||'由家人决定';
+  document.getElementById('fClue').value=a.clue||'';
+  document.getElementById('fMessage').value=a.message||'';
+  showForm();
+}
+function deleteAsset(id){
+  if(!confirm('确定删除这一项吗？删除后不可恢复。'))return;
+  var d=load();
+  d.assets=(d.assets||[]).filter(function(x){return x.id!==id;});
+  save(d);
+  refreshCategoryList();
+  if(document.getElementById('view-checklist').classList.contains('on'))renderChecklist();
+}
+
+/* ================= 清单视图 ================= */
+function renderChecklist(){
+  var d=load();var assets=d.assets||[];
+  document.getElementById('statCount').textContent=assets.length;
+  var catsUsed={};
+  assets.forEach(function(a){catsUsed[a.cat]=1;});
+  document.getElementById('statCat').textContent=Object.keys(catsUsed).length;
+  var body='';
+  CATS.forEach(function(c){
+    var items=assets.filter(function(a){return a.cat===c.id;});
+    if(!items.length)return;
+    body+='<div class="kicker">'+c.label+'（'+items.length+'）</div>'+items.map(renderItemRow).join('');
+  });
+  document.getElementById('checklistBody').innerHTML=body||'<p class="lede">还没有登记任何资产，去盘点看看吧。</p>';
+}
+
+/* ================= 导出 / 导入 ================= */
+function exportData(){
+  var d=load();
+  var payload={assets:d.assets||[],exportedAt:new Date().toISOString(),app:'mingbai',version:1};
+  var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  var t=new Date();
+  var fn='明白纸-资产清单-'+t.getFullYear()+pad(t.getMonth()+1)+pad(t.getDate())+'.json';
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;a.download=fn;document.body.appendChild(a);a.click();
+  setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},200);
+}
+function importData(file){
+  if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var data=JSON.parse(e.target.result);
+      var assets=data.assets;
+      if(!Array.isArray(assets))throw new Error('格式不对');
+      if(!confirm('将导入 '+assets.length+' 项资产，覆盖当前设备上的清单，确定继续吗？')){
+        document.getElementById('importFile').value='';
+        return;
+      }
+      var d=load();d.assets=assets;save(d);
+      renderChecklist();
+      alert('导入完成');
+    }catch(err){
+      alert('导入失败：文件格式不正确');
+    }
+    document.getElementById('importFile').value='';
+  };
+  reader.readAsText(file);
+}
+
+/* ================= 打印 ================= */
+var SITE_URL='https://anhao-d8g9tvlyu442584c7-1452944430.tcloudbaseapp.com/mingbai/';
+function printAssets(){
+  var d=load();var assets=d.assets||[];
+  var t=new Date();
+  var dateStr=t.getFullYear()+'年'+(t.getMonth()+1)+'月'+t.getDate()+'日';
+  var html='<div class="p-cover"><h1>家庭数字资产清单</h1><div class="p-date">生成日期：'+dateStr+'</div></div>';
+  var any=false;
+  CATS.forEach(function(c){
+    var items=assets.filter(function(a){return a.cat===c.id;});
+    if(!items.length)return;
+    any=true;
+    html+='<div class="p-cat"><h2>'+esc(c.label)+'（'+items.length+' 项）</h2>';
+    items.forEach(function(a){
+      html+='<div class="p-item"><div class="p-plat">'+esc(a.platform)+'</div>';
+      html+='<div class="p-field"><b>账号备注：</b>'+(a.note?esc(a.note):'（未填写）')+'</div>';
+      html+='<div class="p-field"><b>预估价值：</b>'+esc(a.value||'不确定')+'　<b>处理意愿：</b>'+esc(a.intent||'由家人决定')+'</div>';
+      html+='<div class="p-field"><b>凭证存放线索：</b>'+(a.clue?esc(a.clue):'（未填写）')+'</div>';
+      if(a.message)html+='<div class="p-field"><b>想对家人说：</b>'+esc(a.message)+'</div>';
+      html+='</div>';
+    });
+    html+='</div>';
+  });
+  if(!any)html+='<p style="margin-top:20px">（尚未登记任何资产）</p>';
+  html+='<div class="p-foot"><p><b>重要提示：</b>本清单仅为个人整理的数字资产参考信息，不具有法律遗嘱效力，不构成产权分配依据。涉及财产继承、分割等法律事务，请前往公证处或遗嘱库办理正式手续。</p>'+
+    '<p>各平台的家属办理指南（材料、入口、电话）：'+esc(SITE_URL)+'</p>'+
+    '<div class="p-sign"><div>立表人签名 / 日期</div><div>家属确认签收 / 日期</div></div></div>';
+  document.getElementById('printArea').innerHTML=html;
+  window.print();
+}
+function printGuide(id){
+  var g=null;
+  for(var i=0;i<GUIDES.length;i++){if(GUIDES[i].id===id){g=GUIDES[i];break;}}
+  if(!g)return;
+  var html='<div class="p-cover"><h1>'+esc(g.name)+' · 家属操作卡</h1><div class="p-date">类别：'+esc(g.category)+'　更新：'+esc(g.updatedAt)+'</div></div>';
+  (g.options||[]).forEach(function(o,idx){
+    html+='<div class="p-cat"><h2>方案 '+(idx+1)+'：'+esc(o.goal)+'</h2><div class="p-item">';
+    if(o.materials&&o.materials.length)html+='<div class="p-field"><b>所需材料：</b>'+esc(o.materials.join('、'))+'</div>';
+    if(o.steps&&o.steps.length)html+='<div class="p-field"><b>办理步骤：</b>'+o.steps.map(function(s,i2){return (i2+1)+'. '+esc(s);}).join('　')+'</div>';
+    if(o.entry)html+='<div class="p-field"><b>办理入口：</b>'+esc(o.entry)+'</div>';
+    if(o.phone)html+='<div class="p-field"><b>客服电话：</b>'+esc(o.phone)+'</div>';
+    if(o.legalBasis)html+='<div class="p-field"><b>法律依据：</b>'+esc(o.legalBasis)+'</div>';
+    if(o.notes)html+='<div class="p-field"><b>备注：</b>'+esc(o.notes)+'</div>';
+    html+='<div class="p-field"><b>信息可信度：</b>'+esc(confLabel(o.confidence))+'</div>';
+    if(o.sources&&o.sources.length)html+='<div class="p-field"><b>信息来源：</b>'+o.sources.map(function(u){return esc(u);}).join('　')+'</div>';
+    html+='</div></div>';
+  });
+  html+='<div class="p-foot"><p>本操作卡为整理信息，具体以各平台官方最新规则为准；标注"未经官方核实"的内容请自行与平台客服核实。本卡不构成法律建议。</p>'+
+    '<p>更多平台指南与《家庭数字资产清单》整理工具：'+esc(SITE_URL)+'</p></div>';
+  document.getElementById('printArea').innerHTML=html;
+  window.print();
+}
+function confLabel(c){
+  var m={verified:'官方渠道确认',reported:'据公开报道，办理前请与平台确认',unverified:'未经官方核实，仅供参考'};
+  return m[c]||'未标注';
+}
+
+/* ================= 模块2：家属操作指南 ================= */
+// 数据来源：mingbai/research/guides-a.json（银行/微信/支付宝/手机号/QQ）+ guides-b.json（其余11个平台）
+// 排序：家属实际办事优先级——银行存款、微信、支付宝、手机号、QQ 在前，其余随后
+var GUIDES=[
+  {
+    "id": "bank-deposit",
+    "name": "银行账户（存款继承）",
+    "category": "银行",
+    "options": [
+      {
+        "goal": "提取已故存款人小额存款（免公证简化提取）",
+        "materials": ["继承人有效身份证件", "存款人死亡证明", "能证明亲属关系的材料（户口簿、结婚证等）", "存款凭证（存折、银行卡，如有）"],
+        "steps": [
+          "第一顺序继承人（配偶、子女、父母）持身份证、死亡证明、亲属关系证明等材料，前往逝者开户银行网点柜台办理",
+          "账户余额（含黄金积存产品、代理销售的国债、理财产品到期或赎回后的本金及收益）合计不超过5万元人民币（或等值外币，不含未结利息）的，无需公证，银行审核材料齐全后可直接柜台办理提取",
+          "丧葬费、抚恤金不计入5万元限额，可另行简化提取",
+          "材料不齐全或不符合要求的，银行应一次性告知申请人需要补充的材料"
+        ],
+        "entry": "逝者开户银行网点柜台",
+        "phone": "",
+        "legalBasis": "国家金融监督管理总局、中国人民银行《关于优化已故存款人小额存款提取有关要求的通知》（2024年4月19日发布，2024年6月1日起施行，农村中小银行不晚于2025年12月31日落实）；银保监办发〔2021〕18号《关于简化提取已故存款人小额存款相关事宜的通知》",
+        "notes": "5万元是2024年新规统一提高后的全国免公证限额（此前部分银行执行的地方性标准更低）；超过5万元部分仍需办理继承公证或通过法院判决确认继承权后提取；具体经办要求（如是否需其他继承人放弃继承声明）各银行网点执行口径可能略有差异，建议提前电话咨询开户行。",
+        "confidence": "verified",
+        "sources": [
+          "https://www.gov.cn/zhengce/zhengceku/202404/content_6947875.htm"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "wechat",
+    "name": "微信",
+    "category": "社交通讯",
+    "options": [
+      {
+        "goal": "提取微信零钱/零钱通余额（家属继承）",
+        "materials": ["死亡证明", "继承人与逝者的亲属关系证明", "继承权属证明材料"],
+        "steps": [
+          "继承人使用本人实名认证的微信号，依次点击【我】→【服务】→【钱包】→【客服中心】",
+          "在客服对话框输入关键词“微信支付财产继承”，进入【资金继承专属客服】专区",
+          "按页面指引提交死亡证明、亲属关系证明、继承权属等材料，配合客服核验",
+          "平台完成资金核对、核验后办理提取，材料齐全一般1-3个工作日、最快24小时到账"
+        ],
+        "entry": "微信App内【我】→【服务】→【钱包】→【客服中心】，搜索“微信支付财产继承”",
+        "phone": "95017（微信支付/财付通客服专线）；4006 700 700（腾讯综合服务热线）",
+        "legalBasis": "民法典第127条（网络虚拟财产受法律保护）、第1122条（遗产是自然人死亡时遗留的个人合法财产）",
+        "notes": "2026年4月3日腾讯客服公布该服务升级，是目前最新、最明确的官方办理口径；此前（2024年前后）曾有家属反映零钱提取耗时较长、流程不清晰的个案。零钱通资金按同一继承通道一并处理，未查到官方文件逐条单列“零钱通”字样，办理时建议向客服当面确认是否覆盖。",
+        "confidence": "reported",
+        "sources": [
+          "https://news.qq.com/rain/a/20260404A03Z2V00",
+          "http://www.news.cn/tech/20260403/fc68d3d2419c430fbbaeb101eab723a2/c.html",
+          "https://finance.sina.com.cn/jjxw/2026-04-05/doc-inhtkzwz8653982.shtml",
+          "https://www.tencent.com/zh-cn/customer-service.html"
+        ]
+      },
+      {
+        "goal": "处置逝者微信个人账号本身（非公众号/小程序）",
+        "materials": [],
+        "steps": [
+          "微信官方回应：账户使用人过世后，个人账号目前不支持由家属“继承”或直接过户使用",
+          "自2025年9月起，微信不再对长期未登录、不活跃的账号做系统自动注销/回收处理，逝者朋友圈、聊天记录等数据会继续保留，家属无需担心账号因不活跃被自动清空",
+          "若家属确有处置需求，建议直接联系腾讯客服说明情况，具体处理口径以客服实际答复为准；目前未查到官方公开的“家属代为注销个人微信号”标准材料清单和入口"
+        ],
+        "entry": "腾讯客服 kf.qq.com 或微信内客服中心（暂无官方标准自助入口）",
+        "phone": "4006 700 700（腾讯综合服务热线）",
+        "legalBasis": "",
+        "notes": "本条如实说明“查不到官方标准家属注销流程”，请勿套用其他平台或公众号注销流程；若客服要求提供材料，请只在官方渠道内操作，切勿提交密码/验证码。",
+        "confidence": "reported",
+        "sources": [
+          "https://m.mydrivers.com/newsview/1080232.html",
+          "https://news.qq.com/rain/a/20230406A01Z9C00",
+          "https://support.weixin.qq.com/security/readtemplate?page=statement_page&t=account_cancellation%2Fw_index&wechat_real_lang=zh_CN"
+        ]
+      },
+      {
+        "goal": "注销与逝者关联的个人微信公众号/小程序",
+        "materials": ["确认已解除/终止账号绑定的支付、卡券、广告、微信云托管等其他服务", "《微信公众账号注销申请须知》要求的材料", "《代为注销微信公众号小程序账号申请函》"],
+        "steps": [
+          "确认该账号已解除或终止绑定的其他全部服务功能（支付、卡券、广告、公众号第三方服务、微信云托管、微信云开发、腾讯云账号等）",
+          "通过微信公众平台【注销场景】提交申请材料及官方提供的两份文件模板",
+          "平台人工审核处理"
+        ],
+        "entry": "微信公众平台后台【注销场景】",
+        "phone": "",
+        "legalBasis": "",
+        "notes": "该流程针对“公众号/小程序”主体注销，不适用于个人微信号本身；官方页面提示知识库内容非实时更新，办理前建议先与微信公众平台客服核实是否为最新版本。",
+        "confidence": "verified",
+        "sources": [
+          "https://developers.weixin.qq.com/community/develop/doc/000a8ca87180f8f156d306dc66b809"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "alipay",
+    "name": "支付宝",
+    "category": "支付",
+    "options": [
+      {
+        "goal": "提取余额/余额宝/理财资金（小额，一般免公证）",
+        "materials": ["继承人身份证", "死亡证明", "亲属关系证明/继承权承诺书"],
+        "steps": [
+          "拨打支付宝官方客服热线95188，说明账户持有人身故、需要办理资金继承提取",
+          "按客服指引准备身份证、死亡证明、亲属关系证明/承诺书等材料，上传或邮寄至支付宝",
+          "支付宝审核材料后，将账户余额（含余额宝、可赎回的理财/基金产品）转至继承人指定银行账户，全程不收取费用"
+        ],
+        "entry": "拨打95188客服热线说明情况；App内“资金小蜜”→【个人资金处置】→【持有人离世资金处置】入口未能从官方页面直接核实，建议以拨打客服电话为准",
+        "phone": "95188（支付宝官方客服热线）",
+        "legalBasis": "民法典第127条、第1122条",
+        "notes": "账户长期不用资金不会被充公，支付宝会持续保管直至继承人办理提取；App内自助入口路径来自媒体报道，未在官方帮助页面直接核实，标为较低置信度。",
+        "confidence": "reported",
+        "sources": [
+          "https://www.cebnet.com.cn/20170301/102369172.html",
+          "https://cschannel.alipay.com/mobile/helpDetail.htm?help_id=212632",
+          "https://jingyan.baidu.com/article/a17d5285cba7ca8099c8f261.html"
+        ]
+      },
+      {
+        "goal": "提取余额（大额，需办理继承公证）",
+        "materials": ["继承人身份证、户口簿", "被继承人死亡证明", "亲属关系证明", "公证处出具的《存款查询函》", "继承权公证书"],
+        "steps": [
+          "继承人向公证处申请，提供身份证、户口簿、被继承人死亡证明、亲属关系证明等材料",
+          "公证处联系支付宝客服，出具《存款查询函》，继承人将查询函传真/邮寄至支付宝",
+          "支付宝将账户查询证明函（含账号及余额信息）发至继承人邮箱",
+          "继承人凭证明函向公证处申请办理继承权公证书（金额较小可按简易程序办理）",
+          "将公证书和支付宝提供的相关材料传真/邮寄至支付宝，支付宝审核后将余额转至继承人银行账户"
+        ],
+        "entry": "先联系当地公证处，再配合支付宝客服（95188）办理",
+        "phone": "95188",
+        "legalBasis": "民法典第127条、第1122条",
+        "notes": "此流程依据司法行政法律服务案例库公开案例（大连金普新区公证处经办），实际所需材料、金额门槛以当地公证处及支付宝客服当次答复为准；公证需要一定时间和公证费用，费用标准各地公证处不同，未查到全国统一标准。",
+        "confidence": "reported",
+        "sources": [
+          "https://alk.12348.gov.cn/Detail?dbID=44&dbName=GGGY&sysID=490"
+        ]
+      },
+      {
+        "goal": "注销支付宝账号",
+        "materials": ["身份证", "死亡证明", "亲属关系证明"],
+        "steps": [
+          "完成资产（余额、理财、基金等）继承提取手续后，可联系支付宝客服申请注销或长期监管该账号",
+          "具体注销材料清单与操作入口，官方页面未查到公开的家属代注销标准流程，需以客服实际答复为准"
+        ],
+        "entry": "拨打95188客服热线咨询",
+        "phone": "95188",
+        "legalBasis": "",
+        "notes": "支付宝账号本身（区别于账户余额）不可被继承使用，处理完资金后通常由平台注销或监管；此步骤具体口径未查到权威官方文件，标注为存疑，请以客服当次回复为准。",
+        "confidence": "unverified",
+        "sources": [
+          "https://jingyan.baidu.com/article/a17d5285cba7ca8099c8f261.html",
+          "https://www.cebnet.com.cn/20170301/102369172.html"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "mobile-number",
+    "name": "手机号（三大运营商）",
+    "category": "通讯运营商",
+    "options": [
+      {
+        "goal": "提醒：先别急着注销手机号",
+        "materials": [],
+        "steps": [
+          "手机号通常是微信、支付宝、银行、社保等几乎所有账号的短信验证锚点，贸然注销后，号码经运营商约90天冻结期后可能被投入市场重新分配（“二次放号”），新机主凭验证码可能登录逝者原绑定的各类账号，存在被盗刷、信息泄露风险",
+          "建议顺序：先处理微信零钱、支付宝余额等资金类账户的继承提取和解绑，再考虑是否注销或过户手机号",
+          "如暂不确定如何处置，可保持手机号正常缴费在网，避免仓促注销带来的关联账号风险"
+        ],
+        "entry": "",
+        "phone": "",
+        "legalBasis": "",
+        "notes": "工信部已在推动“二次号码解绑”服务，运营商客服在办理主动注销时通常会提醒用户先解绑银行、支付宝、微信等第三方应用；但由家属在身故场景下发起注销时是否会有同样提醒，未查到明确官方说明，建议主动向运营商确认。",
+        "confidence": "reported",
+        "sources": [
+          "https://t.cj.sina.com.cn/articles/view/5787187353/158f1789902001o64k",
+          "http://www.news.cn/info/20240409/2f43dd3f757c4de99e0d68af6dfba9d7/c.html"
+        ]
+      },
+      {
+        "goal": "手机号过户给家属",
+        "materials": ["继承人（新机主）有效身份证件原件", "原机主死亡证明原件", "继承权证明（公证处出具的继承人证明/公证书，或法院判决书）", "亲属关系证明"],
+        "steps": [
+          "携带上述材料前往运营商指定营业厅（三大运营商均要求线下网点办理，不支持纯线上自助）",
+          "中国移动：携带公证处开具的公证书、亲属关系证明、死亡证明、新机主证件，前往指定营业厅提交特殊过户申请",
+          "中国联通：法定继承人凭公证处出具的继承人证明或法院判决书、本人身份证原件、原机主死亡证明原件，到联通自有营业厅办理过户",
+          "中国电信：家属持国家承认的法律文件（死亡证明、继承相关公证材料等）办理，若为靓号则另按靓号规则处理，需视当地网点具体要求",
+          "无需原机主本人到场；运营商强调需公证材料是为核实死亡证明真伪、避免继承纠纷及财务风险"
+        ],
+        "entry": "三大运营商线下营业厅（不支持线上自助办理，建议先电话咨询当地网点具体要求）",
+        "phone": "中国移动10086；中国联通10010；中国电信10000",
+        "legalBasis": "",
+        "notes": "各地网点对材料细节要求可能有差异（如是否所有法定继承人均需到场或出具放弃继承声明），建议先致电客服或到网点预约确认清单，避免多次往返；靓号过户可能有额外限制。",
+        "confidence": "reported",
+        "sources": [
+          "https://h5.cqliving.com/info/detail/1993340.html?cid=1993340",
+          "https://www.10086.cn/support/service/channel/10086/"
+        ]
+      },
+      {
+        "goal": "注销手机号",
+        "materials": ["经办人有效身份证件原件", "原机主死亡证明原件（部分运营商/地区要求）", "亲属关系证明（视运营商要求）"],
+        "steps": [
+          "建议先将手机号从微信、支付宝、银行、社保等第三方应用解绑，避免号码回收后被“二次放号”导致信息安全风险",
+          "携带材料前往运营商营业厅办理销号；部分运营商在办理时需经办人签署相关承诺函",
+          "销号后号码进入约90天冻结期，此后可能被重新分配给新用户"
+        ],
+        "entry": "三大运营商线下营业厅",
+        "phone": "中国移动10086；中国联通10010；中国电信10000",
+        "legalBasis": "",
+        "notes": "冻结期时长及各运营商具体要求可能存在差异，建议办理前电话确认；号码往往是其他账户找回/验证的唯一凭证，销号前务必确认已完成资金类账户的继承提取。",
+        "confidence": "reported",
+        "sources": [
+          "https://t.cj.sina.com.cn/articles/view/5787187353/158f1789902001o64k",
+          "https://www.10010.com/",
+          "https://www.189.cn/bj/support/tariff/added/38335.html"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "qq",
+    "name": "QQ",
+    "category": "社交通讯",
+    "options": [
+      {
+        "goal": "提取QQ钱包余额（家属继承）",
+        "materials": ["死亡证明", "亲属关系证明", "继承权属证明材料"],
+        "steps": [
+          "2026年4月3日起，腾讯客服将微信零钱与QQ钱包的继承服务合并办理：可使用继承人本人实名微信号，依次点击【我】→【服务】→【钱包】→【客服中心】，输入“微信支付财产继承”进入专区",
+          "或直接联系腾讯客服（kf.qq.com在线客服/热线）说明QQ钱包身故继承需求",
+          "按指引提交材料，平台审核后办理，材料齐全最快24小时、一般1-3个工作日到账"
+        ],
+        "entry": "微信/QQ内客服中心，或腾讯客服官网 kf.qq.com",
+        "phone": "95017（微信支付/财付通客服专线）；4006 700 700（腾讯综合服务热线）",
+        "legalBasis": "民法典第127条、第1122条",
+        "notes": "官方公告以“微信QQ零钱”并称，QQ钱包与微信零钱同属财付通体系、共用继承通道；具体到账时限以客服核实的材料完整度为准。",
+        "confidence": "reported",
+        "sources": [
+          "https://news.qq.com/rain/a/20260404A03Z2V00",
+          "http://www.news.cn/tech/20260403/fc68d3d2419c430fbbaeb101eab723a2/c.html"
+        ]
+      },
+      {
+        "goal": "注销QQ号",
+        "materials": ["经办人有效身份证件（本人自助操作情形）"],
+        "steps": [
+          "标准自助流程（账号本人操作）：手机QQ 7.9.9及以上版本 → 头像 →【设置】→【账号与安全】→【更多安全设置】→【注销账号】，需满足页面显示的注销条件",
+          "注销前需先清空QQ钱包余额、Q币、优惠券（转到银行卡或发红包），否则无法完成注销",
+          "若家属无法获得账号登录权限，需联系腾讯客服说明机主身故情况申请协助处理；具体材料要求与办理口径官方FAQ未公开列出，需以客服实际答复为准"
+        ],
+        "entry": "手机QQ内【设置】→【账号与安全】→【更多安全设置】→【注销账号】；或腾讯客服 kf.qq.com",
+        "phone": "4006 700 700（腾讯综合服务热线）",
+        "legalBasis": "",
+        "notes": "标准注销入口面向账号本人操作，家属身故场景下代为注销缺乏公开的标准材料清单，是常见的“坑”——务必先通过官方客服确认当前口径，不要轻信第三方代注销服务。",
+        "confidence": "reported",
+        "sources": [
+          "https://kf.qq.com/faq/1803146n2yMr180314MbIfER.html"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "douyin",
+    "name": "抖音",
+    "category": "短视频/内容社区",
+    "options": [
+      {
+        "goal": "将逝者账号设置为纪念账号（保护状态）",
+        "materials": ["逝者死亡证明", "申请人身份证明", "与逝者的亲属关系证明"],
+        "steps": [
+          "打开抖音App，进入「我」页面",
+          "点击右上角菜单，选择「我的客服」",
+          "在「意见反馈」中说明情况并提交上述证明材料",
+          "抖音安全团队核实材料，通常3-5个工作日内反馈结果"
+        ],
+        "entry": "抖音App内：我 - 右上角菜单 - 我的客服 - 意见反馈",
+        "phone": "",
+        "legalBasis": "",
+        "notes": "申请要求：账号须为普通个人账号（机构认证账号需先取消认证），且账号无纠纷；设为纪念账号后无法再登录、无法更改手机号/密码/实名信息、无法发布新内容，个人主页会显示官方缅怀标识，逝者已发布的作品继续保留；经核实的直系亲属可另行申请继承账号内可继承的财产权益（如创作者收益）。未查到该业务专用客服电话，一般客服热线（95152）不一定能直接处理此类申请，建议优先走App内反馈渠道。",
+        "confidence": "reported",
+        "sources": [
+          "https://www.pai.com.cn/155082.html",
+          "https://news.mydrivers.com/1/773/773617.htm",
+          "https://www.gamersky.com/tech/202108/1411734.shtml"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "weibo",
+    "name": "微博",
+    "category": "社交媒体",
+    "options": [
+      {
+        "goal": "为逝者账号申请保护状态",
+        "materials": ["申请人身份证明", "与逝者关系证明（户口本/结婚证等）", "逝者死亡证明"],
+        "steps": [
+          "私信新浪微博官方账号「@微博客服」，或通过微博客服中心在线反馈",
+          "提交申请人身份证明、亲属关系证明、逝者死亡证明",
+          "微博审核确认逝者身份后，将账号设置为保护状态；若家属有特殊需求（如登录查看缅怀），可另行提出，但账号仍不能发布新内容或更改设置"
+        ],
+        "entry": "微博客服中心 kefu.weibo.com（帐号安全分类下有「如何申请对逝者账号保护」条目）；私信 @微博客服",
+        "phone": "400-096-0960",
+        "legalBasis": "",
+        "notes": "保护状态下账号不能登录（除非家属特批用于缅怀查看）、不能新发内容、不能删除内容、不能更改账号设置；微博也会通过新闻报道、亲友反馈、人工识别等方式主动判断逝者账号，避免与长期不活跃的僵尸号混淆。客服电话来自第三方媒体/问答聚合，未能直接从微博官方页面确认，仅供参考，建议优先用私信客服号或在线反馈。",
+        "confidence": "reported",
+        "sources": [
+          "https://tech.sina.com.cn/digi/2020-09-17/doc-iivhuipp4826227.shtml",
+          "https://m.thepaper.cn/newsDetail_forward_9214622",
+          "https://kefu.weibo.com/faqclassifylist?id=2188&typename=%E5%B8%90%E5%8F%B7%E5%AE%89%E5%85%A8&cs_source=1000",
+          "https://www.igwdh.com/kefu/31313136/"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "bilibili",
+    "name": "B站（哔哩哔哩）",
+    "category": "视频社区",
+    "options": [
+      {
+        "goal": "将账号设置为纪念账号（家属代为申请，或用户生前预设）",
+        "materials": ["逝者死亡证明", "户口本或其他亲属关系证明", "申请人身份证"],
+        "steps": [
+          "手机客户端依次进入：我的 - 联系客服 - 帮助中心 - 纪念账号 - 如何设置纪念账号",
+          "按提示提交死亡证明、亲属关系证明、申请人身份证等材料",
+          "B站法务/客服团队核实材料，约15天内会电话联系确认信息",
+          "审核通过后，账号转为纪念状态"
+        ],
+        "entry": "B站手机客户端：我的 - 联系客服 - 帮助中心 - 纪念账号",
+        "phone": "",
+        "legalBasis": "",
+        "notes": "仅对已完成实名认证、年满14周岁的中国大陆居民账号开放，且实名信息须与逝者一致；2022年改版后，用户也可在生前于设置中预先选择去世后的账号处理方式（保留全部信息/保留账号稿件但清空弹幕评论互动信息/直接注销）。纪念账号会被冻结，任何人无法再登录，充电、打赏等互动功能关闭，个人主页会出现一段官方悼念文字。未找到该业务专用的官方客服电话（网上流传的号码来源不一致，未采信）。",
+        "confidence": "reported",
+        "sources": [
+          "https://baike.baidu.com/item/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E7%BA%AA%E5%BF%B5%E8%B4%A6%E5%8F%B7/56203689",
+          "https://www.pingwest.com/a/245118",
+          "https://finance.sina.com.cn/tech/2022-05-19/doc-imcwiwst8289913.shtml"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "taobao_xianyu",
+    "name": "淘宝/闲鱼",
+    "category": "电商",
+    "options": [
+      {
+        "goal": "淘宝/天猫店铺继承过户",
+        "materials": [
+          "店主死亡证明（居民死亡医学证明或火化证明，需含身份证号且与店主信息一致）",
+          "继承人关系证明（户口本/派出所或公安局证明/公证书，需能说明第一顺位继承情况）",
+          "其他法定继承人放弃继承的公证书（如有多个继承人）",
+          "接收人身份证及支付宝实名账户（未开过店、未绑定其他淘宝账户）"
+        ],
+        "steps": [
+          "登录卖家淘宝账号，进入「卖家中心 - 客户服务 - 店铺过户」",
+          "选择「继承过户」类型，按提示上传死亡证明、亲属关系证明等材料",
+          "淘宝初审约3个工作日，通过后进入7天公示期",
+          "公示期满后缴纳过户费用（约200元），完成店铺主体变更"
+        ],
+        "entry": "卖家中心 - 客户服务 - 店铺过户（seller.taobao.com）",
+        "phone": "",
+        "legalBasis": "民法典继承编（法定继承）",
+        "notes": "过户前需处理完店铺所有进行中的交易，店铺不能有阿里贷款等未结清事项；接收人需年满18-70周岁且具完全民事行为能力。此为店铺（含闲鱼所属阿里生态外的淘宝店铺）继承过户流程，不等同于个人淘宝账号或账户余额的继承。",
+        "confidence": "reported",
+        "sources": [
+          "https://www.chinanotary.org.cn/site/content/4aab1b6aa1894676899d4cd202554363/view",
+          "http://politics.people.com.cn/n/2013/0321/c70731-20862072.html",
+          "https://insight.xiaoduoai.com/commerce-knowledge/taobao-information/taobao-account-transfer-how-to-handle-online-shop-transfer-what-conditions-need-to-be-met.html"
+        ]
+      },
+      {
+        "goal": "闲鱼账号及账户资金处置",
+        "materials": [],
+        "steps": [],
+        "entry": "",
+        "phone": "",
+        "legalBasis": "",
+        "notes": "该平台暂无公开的身后处置通道。闲鱼服务协议规定账号仅限本人使用、不可转让或继承，未查到闲鱼针对逝者账号的专门处理流程，建议家属直接联系闲鱼/淘宝客服说明情况，视个案协商处理。",
+        "confidence": "unverified",
+        "sources": [
+          "https://terms.alicdn.com/legal-agreement/terms/suit_bu1_other/suit_bu1_other201708081618_51146.html"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "jd",
+    "name": "京东（含京东金融小金库）",
+    "category": "电商",
+    "options": [
+      {
+        "goal": "京东账户/京东金融小金库余额处理",
+        "materials": [],
+        "steps": [
+          "京东官方未公开发布用户去世后账户或小金库继承的具体流程",
+          "建议家属准备死亡证明、继承权公证书或亲属关系证明",
+          "致电京东金融客服说明情况，由客服个案判断处理方式，通常需配合走继承公证等法律程序"
+        ],
+        "entry": "京东金融帮助中心 jrhelp.jd.com；京东客服帮助中心 help.jd.com",
+        "phone": "95118",
+        "legalBasis": "民法典继承编（存款类财产可依法定继承）",
+        "notes": "未查到京东商城或京东金融对「用户去世后账户/小金库如何继承」的官方公开说明，本条流程为基于存款类财产继承惯例的建议性描述，非官方发布步骤，请以客服个案答复为准。95118为京东金融官方个人客服热线（服务时间9:00-22:00），950618为京东商城客服热线，均为一般客服号码，非专用于身后事务。",
+        "confidence": "unverified",
+        "sources": [
+          "https://jrhelp.jd.com/",
+          "https://www.digitaling.com/articles/30712.html",
+          "https://help.jd.com/user/custom.html"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "netease",
+    "name": "网易（游戏账号/163邮箱/网易云音乐）",
+    "category": "游戏与互联网服务",
+    "options": [
+      {
+        "goal": "近亲属行使逝者个人信息权利（查阅/复制/更正/删除）",
+        "materials": ["逝者死亡证明", "近亲属关系证明", "申请人身份证明"],
+        "steps": [
+          "确认逝者使用的具体网易产品（网易游戏/163邮箱/网易云音乐/网易大神等）",
+          "打开该产品的隐私政策页面，找到「如何联系我们」部分列出的反馈方式；也可通过网易用户个人信息服务平台（privacy.gm.163.com）操作",
+          "提交死亡证明、亲属关系证明、申请人身份证明，并说明需要行使的具体权利（查阅、复制、更正或删除）",
+          "网易客服核实材料后处理"
+        ],
+        "entry": "各网易产品隐私政策页面的「联系我们」反馈渠道；网易用户个人信息服务平台 privacy.gm.163.com",
+        "phone": "",
+        "legalBasis": "《中华人民共和国个人信息保护法》第四十九条（自然人死亡后，其近亲属可为自身合法、正当利益对死者相关个人信息行使查阅、复制、更正、删除等权利，死者生前另有安排的除外）",
+        "notes": "网易旗下多款产品（163邮箱、网易云游戏、网易大神、UU远程等）隐私政策均写有近乎相同的条款，允许逝者近亲属通过反馈渠道行使上述权利。但需注意：这只是「查阅/复制/更正/删除个人信息」的权利，不等于可以继续使用账号或继承账号内的虚拟财产/游戏道具，且有司法判例指出近亲属不应直接登录逝者账号，网络服务提供者应通过其他合理方式保障近亲属行权而非直接开放登录。未找到统一的官方专用客服电话，需按具体产品的联系渠道操作。",
+        "confidence": "verified",
+        "sources": [
+          "https://help.mail.163.com/faqDetail.do?code=d7a5dc8471cd0c0e8b4b8f4f8e49998b374173cfe9171305fa1ce630d7f67ac29be1df310eb50890",
+          "https://cg.163.com/privacy.html",
+          "https://music.163.com/html/web2/privacy.html",
+          "https://m.thepaper.cn/newsDetail_forward_22988240"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "tencent_games",
+    "name": "腾讯游戏",
+    "category": "游戏",
+    "options": [
+      {
+        "goal": "游戏虚拟财产（Q币/点券/游戏装备等）处理",
+        "materials": ["逝者死亡证明", "继承权公证书或亲属关系证明", "如已通过法院程序，需提供生效法律文书"],
+        "steps": [
+          "整理逝者账号信息、死亡证明、亲属关系证明（如有法院判决/调解书一并准备）",
+          "通过对应游戏内客服反馈入口，或腾讯客服公众号/热线联系客服，说明需要处理的虚拟财产",
+          "腾讯客服个案审核；目前没有统一公开的标准继承流程，如协商不成，可考虑通过司法途径主张权利"
+        ],
+        "entry": "游戏内客服反馈入口；腾讯客服公众号/小程序；腾讯游戏客服热线",
+        "phone": "400-670-0700",
+        "legalBasis": "《中华人民共和国民法典》第一百二十七条（网络虚拟财产依法受保护）；已有法院判例认定游戏账号使用权可依法继承",
+        "notes": "《腾讯游戏许可及服务协议》约定游戏账号所有权归腾讯，用户仅有使用权，官方未开放常规的家属继承通道。但近年多起司法案例（如玩家名下87个游戏账号继承纠纷案）显示，法院可判决账号使用权由继承人继承，游戏公司需协助变更实名信息、保障继承人行使账号使用权，这属于法院裁判后的强制配合，不是客服直接办理的常规业务。客服热线为腾讯游戏通用24小时人工热线，非专用于身后事务，来源为第三方媒体/聚合站点，未能在腾讯官网直接确认，供参考。",
+        "confidence": "reported",
+        "sources": [
+          "https://zhuanlan.zhihu.com/p/677390059",
+          "https://www.bjnews.com.cn/detail/1780998620169200.html",
+          "https://m.21jingji.com/article/20210711/herald/609f316953514bb30ec3284b3c50da88_zaker.html",
+          "https://www.9game.cn/news/7738820.html"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "mihoyo",
+    "name": "米哈游（原神等）",
+    "category": "游戏",
+    "options": [
+      {
+        "goal": "逝者游戏账号处理",
+        "materials": [],
+        "steps": [],
+        "entry": "游戏内反馈渠道；米游社App客服",
+        "phone": "400-666-6312",
+        "legalBasis": "",
+        "notes": "该平台暂无公开的身后处置通道，未查到米哈游针对逝者账号的专门政策或流程。建议家属直接联系客服说明情况，视个案协商。客服电话为米哈游官方一般客服热线（服务时间10:00-20:00），非专用于身后事务，来源为多个游戏媒体报道，未在米哈游官网原文直接确认，供参考。",
+        "confidence": "unverified",
+        "sources": [
+          "https://www.gamersky.com/handbook/202111/1438015.shtml",
+          "https://shouyou.3dmgame.com/gl/255049.html",
+          "https://www.mihoyo.com/company/contact"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "steam",
+    "name": "Steam",
+    "category": "游戏平台",
+    "options": [
+      {
+        "goal": "账号不可转让继承——实际处置建议",
+        "materials": [],
+        "steps": [
+          "Steam官方立场明确：账号与所购游戏许可绑定至个人，不支持转让或继承，即便持有遗嘱或法院文件，Steam客服通常也不会把账号转移给他人或与其他账号合并（Valve在2024年对媒体的公开回应重申了这一点）",
+          "实践中家属常见的变通做法：由家人保管账号密码自行登录访问，但这并不改变账号归属，且违反Steam用户协议，存在账号被检测异常而封禁的风险",
+          "如坚持申诉，可通过Steam支持网站提交工单说明情况，但结果因客服个案而异，官方未承诺协助"
+        ],
+        "entry": "Steam支持网站 help.steampowered.com（工单方式，无客服电话）",
+        "phone": "",
+        "legalBasis": "",
+        "notes": "对比之下，GOG平台已明确表示支持凭遗嘱等文件转让已故用户账号访问权限，是目前主机游戏数字平台中少见的例外。若用户希望身后家人能继续玩到自己的游戏库，比起寄望继承，更现实的办法是账号存续期间使用「Steam Family」共享功能（需生前设置）。",
+        "confidence": "reported",
+        "sources": [
+          "https://www.ithome.com/0/770/563.htm",
+          "https://www.gcores.com/articles/182208",
+          "https://zhuanlan.zhihu.com/p/699212110"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "baidu_netdisk",
+    "name": "百度网盘",
+    "category": "云存储",
+    "options": [
+      {
+        "goal": "取回逝者网盘中的数据",
+        "materials": [],
+        "steps": [
+          "百度网盘服务协议规定账号所有权归百度，用户仅获得使用权，不支持转让、赠与或继承",
+          "目前没有官方公开的「身后数据取回」流程，家属需直接联系百度网盘客服说明情况",
+          "建议准备死亡证明、亲属关系证明，由客服个案判断是否协助导出或提供访问"
+        ],
+        "entry": "百度网盘App内：设置 - 账号管理 - 我的客服；百度网盘帮助中心 help.baidu.com",
+        "phone": "",
+        "legalBasis": "",
+        "notes": "该平台暂无公开的身后处置通道。关于百度网盘客服电话，多个网络来源给出的号码互相矛盾（如4009215520、400-830-3999等不同说法），无法确认统一的官方号码，故本条不写具体电话，建议直接通过App内客服入口联系，避免拨打来源不明的号码。",
+        "confidence": "unverified",
+        "sources": [
+          "https://www.zhihu.com/question/424550484",
+          "https://view.inews.qq.com/a/20240528A04XUP00"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  },
+  {
+    "id": "apple_icloud",
+    "name": "Apple / iCloud",
+    "category": "设备与云服务",
+    "options": [
+      {
+        "goal": "遗产联系人访问已故用户的Apple账户数据（需逝者生前设置）",
+        "materials": ["访问密钥（逝者生前通过遗产联系人功能分享的Access Key）", "逝者死亡证明"],
+        "steps": [
+          "逝者需在生前于设备上：设置 - [个人姓名] - 登录与安全性 - 遗产联系人，添加遗产联系人，并通过信息（iMessage）分享或打印访问密钥",
+          "用户去世后，遗产联系人访问 digital-legacy.apple.com，使用自己的Apple账户登录",
+          "输入访问密钥并上传死亡证明",
+          "苹果审核通过后，遗产联系人可获得该Apple账户内照片、备忘录、邮件、文件、设备备份等数据的访问权限；但无法访问以该账户购买的影音/图书/App等数字内容，也无法访问iCloud钥匙串中保存的密码、支付信息等"
+        ],
+        "entry": "digital-legacy.apple.com",
+        "phone": "",
+        "legalBasis": "",
+        "notes": "这是目前查到的、为数不多有正式官方线上通道的「数字遗产」机制，值得在生前提前设置。遗产联系人可以是任何人，不需要拥有Apple账户或苹果设备即可被指定，但激活时需要自己登录访问密钥页面。",
+        "confidence": "verified",
+        "sources": [
+          "https://support.apple.com/en-us/102631",
+          "https://support.apple.com/en-us/102431"
+        ]
+      },
+      {
+        "goal": "未设置遗产联系人时，法定继承人申请访问已故家庭成员的Apple账户",
+        "materials": ["逝者死亡证明", "能够证明合法继承权的文件（苹果可能要求法院文件确认继承权）"],
+        "steps": [
+          "联系Apple支持，说明需要申请访问已故家庭成员Apple账户",
+          "提交死亡证明及能证明合法继承权的文件",
+          "苹果审核（可能要求法院命令等司法文件），审核通过后可提供有限的数据访问，但访问范围通常小于「遗产联系人」机制，且不保证能获得账户内全部数据"
+        ],
+        "entry": "support.apple.com 官方支持渠道（「申请访问已故家庭成员的Apple账户」相关页面）",
+        "phone": "",
+        "legalBasis": "",
+        "notes": "苹果官方明确说明：相比生前设置遗产联系人，事后由家属申请访问的成功率更低、能拿到的数据范围也更有限，因此更建议用户提前设置遗产联系人。中国大陆用户申请时可能涉及提供继承公证书等本地化材料，具体以苹果客服个案要求为准，未查到专门针对中国大陆用户的差异化说明。",
+        "confidence": "reported",
+        "sources": [
+          "https://support.apple.com/en-us/102431"
+        ]
+      }
+    ],
+    "updatedAt": "2026-07"
+  }
+];
+
+var guideFilterCat='全部';
+function renderGuideView(){
+  var cats=['全部'];
+  GUIDES.forEach(function(g){if(cats.indexOf(g.category)<0)cats.push(g.category);});
+  document.getElementById('guideFilter').innerHTML=cats.map(function(c){
+    return '<button class="chip'+(c===guideFilterCat?' active':'')+'" onclick="setGuideFilter(\''+c.replace(/'/g,"\\'")+'\')">'+c+'</button>';
+  }).join('');
+  var list=GUIDES.filter(function(g){return guideFilterCat==='全部'||g.category===guideFilterCat;});
+  document.getElementById('guideList').innerHTML=list.length?list.map(function(g){
+    return '<button class="ncard plain" onclick="go(\'guideDetail\');renderGuideDetail(\''+g.id+'\')">'+
+      '<div class="ic">'+ICON_BOOK+'</div>'+
+      '<div><h2>'+esc(g.name)+'</h2><p>'+esc(g.category)+' · 更新于 '+esc(g.updatedAt)+'</p></div>'+
+      '</button>';
+  }).join(''):'<p class="lede">这一类暂时还没有整理好的指南，敬请期待。</p>';
+}
+function setGuideFilter(c){guideFilterCat=c;renderGuideView();}
+function renderGuideDetail(id){
+  var g=null;
+  for(var i=0;i<GUIDES.length;i++){if(GUIDES[i].id===id){g=GUIDES[i];break;}}
+  if(!g)return;
+  document.getElementById('gdKicker').textContent=g.category+' · 更新于 '+g.updatedAt;
+  document.getElementById('gdTitle').textContent=g.name+' 家属操作卡';
+  document.getElementById('gdBody').innerHTML=(g.options||[]).map(function(o,idx){
+    var h='<h3>方案 '+(idx+1)+'：'+esc(o.goal)+'</h3>';
+    h+='<p class="small" style="margin:6px 0 10px"><b>可信度：</b><span class="badge-conf '+esc(o.confidence)+'">'+confLabel(o.confidence)+'</span></p>';
+    if(o.materials&&o.materials.length)h+='<p><b>所需材料：</b>'+esc(o.materials.join('、'))+'</p>';
+    if(o.steps&&o.steps.length)h+='<p style="margin-top:8px"><b>办理步骤：</b></p><ul class="rules">'+o.steps.map(function(s){return '<li>'+esc(s)+'</li>';}).join('')+'</ul>';
+    if(o.entry)h+='<p style="margin-top:8px"><b>办理入口：</b>'+esc(o.entry)+'</p>';
+    if(o.phone)h+='<p style="margin-top:8px"><b>客服电话：</b>'+esc(o.phone)+'</p>';
+    if(o.legalBasis)h+='<p style="margin-top:8px"><b>法律依据：</b>'+esc(o.legalBasis)+'</p>';
+    if(o.notes)h+='<p class="small" style="margin-top:8px">'+esc(o.notes)+'</p>';
+    if(o.sources&&o.sources.length)h+='<p class="small" style="margin-top:10px"><b>信息来源：</b><br>'+o.sources.map(function(u){return '<a href="'+esc(u)+'" target="_blank" rel="noopener" style="color:var(--teal);word-break:break-all;display:block;margin-top:2px">'+esc(u)+'</a>';}).join('')+'</p>';
+    return '<div class="card">'+h+'</div>';
+  }).join('');
+  document.getElementById('gdPrintBtn').onclick=function(){printGuide(id);};
+}
+
+/* ================= 启动 ================= */
+(function(){
+  go('home');
+})();
+</script>
+</body>
+</html>
