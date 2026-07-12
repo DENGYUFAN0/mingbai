@@ -579,7 +579,6 @@ function importData(file){
 }
 
 /* ================= 打印 ================= */
-var SITE_URL='https://anhao-d8g9tvlyu442584c7-1452944430.tcloudbaseapp.com/mingbai/';
 function printAssets(){
   var d=load();var assets=d.assets||[];
   var t=new Date();
@@ -603,7 +602,6 @@ function printAssets(){
   });
   if(!any)html+='<p style="margin-top:20px">（尚未登记任何资产）</p>';
   html+='<div class="p-foot"><p><b>重要提示：</b>本清单仅为个人整理的数字资产参考信息，不具有法律遗嘱效力，不构成产权分配依据。涉及财产继承、分割等法律事务，请前往公证处或遗嘱库办理正式手续。</p>'+
-    '<p>各平台的家属办理指南（材料、入口、电话）：'+esc(SITE_URL)+'</p>'+
     '<div class="p-sign"><div>立表人签名 / 日期</div><div>家属确认签收 / 日期</div></div></div>';
   document.getElementById('printArea').innerHTML=html;
   window.print();
@@ -625,8 +623,7 @@ function printGuide(id){
     if(o.sources&&o.sources.length)html+='<div class="p-field"><b>信息来源：</b>'+o.sources.map(function(u){return esc(u);}).join('　')+'</div>';
     html+='</div></div>';
   });
-  html+='<div class="p-foot"><p>本操作卡为整理信息，具体以各平台官方最新规则为准；标注"未经官方核实"的内容请自行与平台客服核实。本卡不构成法律建议。</p>'+
-    '<p>更多平台指南与《家庭数字资产清单》整理工具：'+esc(SITE_URL)+'</p></div>';
+  html+='<div class="p-foot"><p>本操作卡为整理信息，具体以各平台官方最新规则为准；标注"未经官方核实"的内容请自行与平台客服核实。本卡不构成法律建议。</p></div>';
   document.getElementById('printArea').innerHTML=html;
   window.print();
 }
